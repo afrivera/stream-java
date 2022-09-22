@@ -1,5 +1,9 @@
 package org.afrivera.api.stream.ejemplos.models;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 public class Usuario {
 
     private String nombre;
@@ -7,10 +11,22 @@ public class Usuario {
     private Integer id;
     private static int lastId = 0;
 
+    private List<Factura> facturas;
+
     public Usuario(String nombre, String apellido) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.id = ++lastId;
+        this.facturas = new ArrayList<>();
+    }
+
+    public List<Factura> getFacturas() {
+        return facturas;
+    }
+
+    public void addFactura(Factura factura) {
+        this.facturas.add(factura);
+        factura.setUsuario(this);
     }
 
     public Integer getId() {
@@ -38,7 +54,21 @@ public class Usuario {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return Objects.equals(nombre, usuario.nombre) && Objects.equals(apellido, usuario.apellido);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nombre, apellido);
+    }
+
+    @Override
     public String toString() {
         return nombre + " " +apellido ;
     }
+
 }
